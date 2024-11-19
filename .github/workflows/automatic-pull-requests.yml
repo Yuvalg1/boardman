@@ -1,51 +1,45 @@
 on:
   push:
     branches:
-      - '*/[0-9]+-*'
-      - '!dev'
+      - "*/[0-9]+-*"
+      - "!dev"
 
 name: create pull request
 
 jobs:
-  get_github_data:
+  create_pull_request:
     runs-on: ubuntu-latest
+    if: github.event.created == true
     steps:
+      - name: check out code
+        uses: actions/checkout@v3
+
       - name: get username
         id: username
         run: |
           username=$(echo ${{github.ref_name}} | cut -d/ -f1)
           echo "$username"
-          echo "USERNAME=$username" $GITHUB_OUTPUT
-
-          if [[ "$username" == "${{github.actor}}" ]]; then
-            echo "branch_name_matches=true" >> GITHUB_ENV
-          else
-            echo "branch_name_matches=false" >> GITHUB_ENV
-          fi
-
-  create_pull_request:
-    if: ${{ github.event.created == 'true' && env.branch_name_matches== 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: check out code
-        uses: actions/checkout@v3
+          echo "${{github.actor}}"
+          echo "USERNAME=$username" >> $GITHUB_OUTPUT
 
       - name: get branch name
         id: branch_name
         run: |
           branch_name=$(echo ${{github.ref_name}} | cut -d/ -f2 | cut -d- -f2- | tr '-' ' ')
           capitalized_branch_name=$(echo "${branch_name^}")
-          echo "$branch_name"
+          echo "$capitalized_branch_name"
           echo "BRANCH_NAME=$branch_name" >> $GITHUB_OUTPUT
 
       - name: get issue number
         id: issue_number
         run: |
-          issue_num=$(echo ${{github.ref_name}} | cut -d/ -f2 | cut -d- -f1)
+          issue_num=$(echo ${{ github.ref_name }} | cut -d/ -f2 | cut -d- -f1)
           echo "$issue_num"
           echo "ISSUE_NUM=$issue_num" >> $GITHUB_OUTPUT
 
       - name: raise PR
-        run: gh pr create --assignee "${{github.actor}}" --draft --base dev --head ${{ github.ref_name }} --title "${{steps.branch_name.outputs.BRANCH_NAME}}" --body "[Issue Number ${{steps.issue_number.outputs.ISSUE_NUM}}](https://github.com/Yuvalg1/boardman/issues/${{steps.issue_number.outputs.ISSUE_NUM}})"
+        if: ${{(github.actor == steps.username.outputs.USERNAME)}}
+        run: |
+          gh pr create --assignee "${{ github.actor }}" --draft --base dev --head ${{ github.ref_name }} --title "${{ steps.branch_name.outputs.BRANCH_NAME }}" --body "[Issue Number ${{steps.issue_number.outputs.ISSUE_NUM}}](https://github.com/Yuvalg1/boardman/issues/${{steps.issue_number.outputs.ISSUE_NUM}})"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
