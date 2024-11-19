@@ -1,0 +1,20 @@
+{
+  "scripts": {
+    "build": "tsc"
+  },
+  "name": "boardman",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "jest": "^29.7.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "zustand": "^5.0.1"
+  }
+}
