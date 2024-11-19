@@ -43,7 +43,7 @@ jobs:
 
       - name: raise PR
         run: |
-        if [[ "${{ steps.username.outputs.USERNAME }} == ${{ github.actor }} "]]; then
+        if [[ "${{ steps.username.outputs.USERNAME }}" == "${{ github.actor }}" ]]; then
           gh pr create --assignee "${{ github.actor }}" --draft --base dev --head ${{ github.ref_name }} --title "${{ steps.branch_name.outputs.BRANCH_NAME }}" --body "[Issue Number ${{steps.issue_number.outputs.ISSUE_NUM}}](https://github.com/Yuvalg1/boardman/issues/${{steps.issue_number.outputs.ISSUE_NUM}})"
         fi
         env:
