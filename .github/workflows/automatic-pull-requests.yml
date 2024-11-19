@@ -19,7 +19,7 @@ jobs:
           username=$(echo ${{github.ref_name}} | cut -d/ -f1)
           echo "$username"
           echo "${{github.actor}}"
-          echo "USERNAME=$username" $GITHUB_OUTPUT
+          echo "USERNAME=$username" >> $GITHUB_OUTPUT
 
       - name: get branch name
         id: branch_name
