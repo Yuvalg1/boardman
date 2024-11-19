@@ -36,7 +36,7 @@ jobs:
           echo "ISSUE_NUM=$issue_num" >> $GITHUB_OUTPUT
 
       - name: raise PR
-        if: ${{(github.actor == steps.username.outputs.USERNAME)}}
+        if: ${{(github.actor == ${{steps.username.outputs.USERNAME}})}}
         run: |
           gh pr create --assignee "${{ github.actor }}" --draft --base dev --head ${{ github.ref_name }} --title "${{ steps.branch_name.outputs.BRANCH_NAME }}" --body "[Issue Number ${{steps.issue_number.outputs.ISSUE_NUM}}](https://github.com/Yuvalg1/boardman/issues/${{steps.issue_number.outputs.ISSUE_NUM}})"
         env:
