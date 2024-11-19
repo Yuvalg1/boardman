@@ -8,7 +8,6 @@ name: create pull request
 
 jobs:
   create_pull_request:
-    if: ${{ github.event.created == 'true' && env.branch_name_matches== 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: check out code
