@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import type { SetActions } from "./types";
-import type { CardState } from "./types/card";
+import type { SetActions } from "./types/zustand";
+import type { CardState } from "./types/states";
 import { v4 } from 'uuid';
 
 const initialState: CardState = {

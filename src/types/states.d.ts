@@ -3,3 +3,8 @@ export interface CardState {
   id: string;
   value: number;
 }
+
+export interface PlayerState {
+  name: string;
+  cards: CardState[];
+}
