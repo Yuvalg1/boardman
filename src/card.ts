@@ -3,12 +3,15 @@ import type { SetActions } from "./types";
 import type { CardState } from "./types/card";
 
 const initialState: CardState = {
-  effect: () => { }
+  effect: () => { },
+  id: crypto.randomUUID(),
+  value: 0
 }
 
-const cardActions = (set: SetActions<CardStore>, get: () => CardStore) => {
-
-}
+const cardActions = (set: SetActions<CardStore>) => ({
+  setEffect: (effect: Function) => set({ effect }),
+  setValue: (value: number) => set({ value }),
+})
 
 export type CardStore = CardState & {
   initialState: CardState
@@ -19,6 +22,6 @@ export const useCardStore = create<CardStore>()((set: SetActions<CardStore>, get
   return {
     ...initialState,
     initialState,
-    cardActions: cardActions(set, get)
+    cardActions: cardActions(set)
   }
 })
