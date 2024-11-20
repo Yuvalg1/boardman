@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import type { SetActions } from "./types";
-import type { CardState } from "./types/card";
+import type { SetActions } from "./types/zustand";
+import type { Card } from "./types/states";
 import { v4 } from 'uuid';
 
-const initialState: CardState = {
+const initialState: Card = {
   effect: () => { },
   id: v4(),
   value: 0
@@ -14,8 +14,8 @@ const cardActions = (set: SetActions<CardStore>) => ({
   setValue: (value: number) => set({ value }),
 })
 
-export type CardStore = CardState & {
-  initialState: CardState
+export type CardStore = Card & {
+  initialState: Card
   cardActions: ReturnType<typeof cardActions>
 }
 
