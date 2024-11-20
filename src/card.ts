@@ -1,10 +1,11 @@
 import { create } from "zustand";
 import type { SetActions } from "./types";
 import type { CardState } from "./types/card";
+import { v4 } from 'uuid';
 
 const initialState: CardState = {
   effect: () => { },
-  id: crypto.randomUUID(),
+  id: v4(),
   value: 0
 }
 
