@@ -1,3 +1,5 @@
 export interface CardState {
-  effect: Function
+  effect: Function;
+  id: string;
+  value: number;
 }
