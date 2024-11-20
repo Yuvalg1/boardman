@@ -1,10 +1,12 @@
-export interface CardState {
+export interface Card {
   effect: Function;
   id: string;
   value: number;
 }
 
-export interface PlayerState {
+export interface Player {
   name: string;
-  cards: CardState[];
+  cards: Card[];
+  coins?: number;
+  victoryPoints?: number;
 }
