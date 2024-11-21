@@ -1,0 +1,32 @@
+on:
+  pull_request:
+    types: [closed]
+
+name: remove code review label from issue
+
+jobs:
+  remove-code-review-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: remove code review label
+        run: |
+          LABEL_TO_REMOVE="waiting%20for%20CR"
+          ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1)
+
+          curl -X DELETE \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels/$LABEL_TO_REMOVE"
+
+  close-pull-request-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: close issue connected to pull request
+        if: github.event.pull_request.merged == true
+        run: |
+          ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1)
+          curl -X PATCH \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d '{"state": "closed"}' \
+            "https://api.github.com/repos/${{ github.repository }}/issues/${ISSUE_NUMBER}"
