@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: remove in progress label
         run: |
-          LABEL_TO_REMOVE="in progress"
+          LABEL_TO_REMOVE="in%20progress"
           ISSUE_NUMBER=${{ github.event.issue.number }}
           REPO_OWNER=${{ github.repository_owner }}
           REPO_NAME=${{ github.event.repository.name }}

@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: remove in progress label
         run: |
-          LABEL_TO_REMOVE="in progress"
+          LABEL_TO_REMOVE="in%20progress"
           ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1)
 
           curl -X DELETE \

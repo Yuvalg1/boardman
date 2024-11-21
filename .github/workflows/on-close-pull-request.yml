@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: remove code review label
         run: |
-          LABEL_TO_REMOVE="waiting for CR"
+          LABEL_TO_REMOVE="waiting%20for%20CR"
           ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1)
 
           curl -X DELETE \
