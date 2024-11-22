@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { act } from 'react';
-import { usePlayerStore } from "../../../src/player";
+import { usePlayerStore } from "../../src/player";
 import { createRandomCard, createRandomCards } from "../utils/create";
 
 describe("player cards unit tests", () => {

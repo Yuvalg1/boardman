@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { act } from 'react';
-import { usePlayerStore } from "../../../src/player";
+import { usePlayerStore } from "../../src/player";
 
 describe("player name unit tests", () => {
   it("set player name", () => {

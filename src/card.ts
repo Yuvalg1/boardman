@@ -6,11 +6,15 @@ import { v4 } from 'uuid';
 const initialState: Card = {
   effect: () => { },
   id: v4(),
+  name: '',
   value: 0
 }
 
 const cardActions = (set: SetActions<CardStore>) => ({
+  setName: (name: string) => set({ name }),
+
   setEffect: (effect: Function) => set({ effect }),
+
   setValue: (value: number) => set({ value }),
 })
 
