@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { act } from 'react';
-import { usePlayerStore } from "../../../src/player";
+import { usePlayerStore } from "../../src/player";
 
 describe("player victory points unit tests", () => {
   it('set victory points', () => {

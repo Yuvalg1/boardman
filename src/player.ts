@@ -2,8 +2,10 @@ import { create } from "zustand";
 import type { SetActions } from "./types/zustand";
 import type { Card, Player } from "./types/states";
 import { shuffle } from "./utils";
+import { v4 } from "uuid";
 
 const initialState: Player = {
+  id: v4(),
   name: "",
   cards: [],
 }
@@ -11,7 +13,7 @@ const initialState: Player = {
 const playerActions = (set: SetActions<PlayerStore>, get: () => PlayerStore) => ({
   setName: (name: string) => set({ name }),
 
-  addCards: (cards: Card[]) => set({ cards: get().cards.concat(cards) }),
+  addCards: (cards: Card | Card[]) => set({ cards: get().cards.concat(cards) }),
 
   setVictoryPoints: (victoryPoints: number) => set({ victoryPoints }),
 
