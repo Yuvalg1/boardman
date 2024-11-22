@@ -13,7 +13,11 @@ export interface Player {
   victoryPoints?: number;
 }
 
-export type Deck = Card[];
+export interface Deck {
+  name: string;
+  description?: string;
+  cards: Card[];
+}
 
 export interface Board {
   players: Player[];

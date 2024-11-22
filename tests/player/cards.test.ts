@@ -9,7 +9,7 @@ describe("player cards unit tests", () => {
     const card1 = createRandomCard();
     const card2 = createRandomCard();
 
-    act(() => result.current.playerActions.addCards([card1]));
+    act(() => result.current.playerActions.addCards(card1));
     expect(result.current.cards).toEqual([card1]);
     act(() => result.current.playerActions.addCards([card2]));
     expect(result.current.cards).toEqual([card1, card2]);

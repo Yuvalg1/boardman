@@ -3,7 +3,8 @@ import type { SetActions } from "./types/zustand";
 import type { Board, Deck, Player } from "./types/states";
 
 const initialState: Board = {
-  players: []
+  players: [],
+  decks: []
 }
 
 const boardActions = (set: SetActions<BoardStore>, get: () => BoardStore) => ({
@@ -13,11 +14,14 @@ const boardActions = (set: SetActions<BoardStore>, get: () => BoardStore) => ({
 
   addDecks: (deck: Deck | Deck[]) => set({ decks: get().decks.concat(deck) }),
 
-  removeDecks: (index = 0) => {
+  removeDeck: (index = 0) => {
     const decks = get().decks
+    const removedDeck = decks[index]
     decks.splice(index, 1);
 
     set({ decks })
+
+    return removedDeck;
   },
 
   setDeck: (deck: Deck, index = 0) => {
@@ -32,13 +36,13 @@ const boardActions = (set: SetActions<BoardStore>, get: () => BoardStore) => ({
 
 export type BoardStore = Board & {
   initialState: Board;
-  cardActions: ReturnType<typeof boardActions>
+  boardActions: ReturnType<typeof boardActions>
 }
 
-export const useCardStore = create<BoardStore>()((set: SetActions<BoardStore>, get: () => BoardStore) => {
+export const useBoardStore = create<BoardStore>()((set: SetActions<BoardStore>, get: () => BoardStore) => {
   return {
     ...initialState,
     initialState,
-    cardActions: boardActions(set, get)
+    boardActions: boardActions(set, get)
   }
 })
