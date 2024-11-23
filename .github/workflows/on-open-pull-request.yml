@@ -19,8 +19,6 @@ jobs:
 
       - name: add in progress label
         run: |
-          if [ ! -z "$ISSUE_NUMBER" ]; then
-            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -d '{"labels":[ $LABEL_TO_ADD ]}' \
-            "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels"
-          fi
+          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -d '{"labels":[ $LABEL_TO_ADD ]}' \
+          "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels"

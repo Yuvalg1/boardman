@@ -28,8 +28,6 @@ jobs:
 
       - name: add code review Label
         run: |
-          if [ ! -z "$ISSUE_NUMBER" ]; then
-            curl -g -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -d '{"labels":[ $LABEL_TO_ADD ]}' \
-            "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels"
-          fi
+          curl -g -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -d '{"labels":[ $LABEL_TO_ADD ]}' \
+          "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels"
