@@ -8,7 +8,7 @@ env:
   LABEL_TO_ADD: "in progress"
 
 jobs:
-  calculate-issue-number:
+  calculate_issue_number:
     runs-on: ubuntu-latest
     outputs:
       ISSUE_NUMBER: ${{ steps.set_issue_number.outputs.var_value }}
@@ -22,7 +22,7 @@ jobs:
 
   open-pull-request-add-in-progress-label:
     runs-on: ubuntu-latest
-    needs: calculate-issue-number
+    needs: calculate_issue_number
     steps:
       - name: add in progress label
         run: |
