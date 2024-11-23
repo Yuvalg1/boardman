@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: calculate issue number
         run: |
-          PR_BODY=$(echo "${{ github.event.pull_request.body }}" | jq -r .body)
+          PR_BODY=$(echo "${{ github.event.pull_request.body }}" | jq -r '.body')
           ISSUE_NUMBER=$(echo "$PR_BODY" | grep -oP '\[#\K\d+(?=\])')
           echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
 
