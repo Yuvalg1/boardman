@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: calculate issue number
         run: |
-          PR_BODY=echo ${{ github.event.pull_request.body }}
+          PR_BODY=${{ github.event.pull_request.body }}
           ISSUE_NUMBER=$(echo "$PR_BODY" | grep -o '#[0-9]\+' | sed 's/#//')
           echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
 
