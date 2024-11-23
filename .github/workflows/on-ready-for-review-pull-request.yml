@@ -15,6 +15,7 @@ jobs:
     steps:
       - name: remove in progress label
         run: |
+          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> GITHUB_OUTPUT
           curl -g -X DELETE \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
