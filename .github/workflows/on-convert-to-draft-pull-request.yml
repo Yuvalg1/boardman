@@ -5,7 +5,6 @@ on:
 name: add in progress label to issue
 
 env:
-  ISSUE_NUMBER: $(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1 | grep -o '[0-9]*')
   LABEL_TO_REMOVE: "waiting%20for%20CR"
   LABEL_TO_ADD: "in progress"
 
@@ -13,6 +12,11 @@ jobs:
   add-in-progress-label:
     runs-on: ubuntu-latest
     steps:
+      - name: calculate issue number
+        run: |
+          ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1 | grep -o '[0-9]*')
+          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
+
       - name: remove code review label
         run: |
           curl -g -X DELETE \

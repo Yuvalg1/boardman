@@ -5,7 +5,6 @@ on:
 name: add code review label to issue
 
 env:
-  ISSUE_NUMBER: $(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1 | grep -o '[0-9]*')
   LABEL_TO_REMOVE: "in%20progress"
   LABEL_TO_ADD: "waiting for CR"
 
@@ -14,9 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: calculate issue number
+        run: |
+          ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1 | grep -o '[0-9]*')
+          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
+
       - name: remove in progress label
         run: |
-
           curl -g -X DELETE \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
