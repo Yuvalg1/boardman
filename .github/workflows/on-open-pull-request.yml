@@ -8,17 +8,24 @@ env:
   LABEL_TO_ADD: "in progress"
 
 jobs:
-  add-in-progress-label:
+  calculate-issue-number:
     runs-on: ubuntu-latest
+    outputs:
+      ISSUE_NUMBER: ${{ steps.set_issue_number.outputs.var_value }}
     steps:
       - name: calculate issue number
+        id: set_issue_number
         run: |
           pr_body=${{ github.event.pull_request.body }}
           issue_number=$(echo "$pr_body" | grep -o '#[0-9]\+' | sed 's/#//')
           echo "ISSUE_NUMBER=$issue_number" >> $GITHUB_ENV
 
+  open-pull-request-add-in-progress-label:
+    runs-on: ubuntu-latest
+    needs: calculate-issue-number
+    steps:
       - name: add in progress label
         run: |
           curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           -d '{"labels":[ $LABEL_TO_ADD ]}' \
-          "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels"
+          "https://api.github.com/repos/${{ github.repository }}/issues/${{ needs.calculate_issue-number.outputs.ISSUE_NUMBER }}/labels"
