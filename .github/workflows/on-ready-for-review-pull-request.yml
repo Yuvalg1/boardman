@@ -17,10 +17,10 @@ jobs:
           PR_BODY=${{ github.event.pull_request.body }}
           ISSUE_NUMBER=$(echo "$PR_BODY" | grep -o '#[0-9]\+' | sed 's/#//')
           echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
+          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
 
       - name: remove in progress label
         run: |
-          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
           curl -g -X DELETE \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
