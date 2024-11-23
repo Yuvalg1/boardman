@@ -33,13 +33,13 @@ jobs:
       - name: get issue number
         id: issue_number
         run: |
-          issue_num=$(echo ${{ github.ref_name }} | cut -d/ -f2 | cut -d- -f1)
+          issue_num=$(echo ${{ github.ref_name }} | cut -d/ -f2 | cut -d- -f1 | grep -o '[0-9]*')
           echo "$issue_num"
           echo "ISSUE_NUM=$issue_num" >> $GITHUB_OUTPUT
 
       - name: raise PR
         if: ${{(github.actor == steps.username.outputs.USERNAME)}}
         run: |
-          gh pr create --assignee "${{ github.actor }}" --draft --base dev --head ${{ github.ref_name }} --title "${{ steps.branch_name.outputs.BRANCH_NAME }}" --body "[Fixes ${{steps.issue_number.outputs.ISSUE_NUM}}](https://github.com/Yuvalg1/boardman/issues/${{steps.issue_number.outputs.ISSUE_NUM}})"
+          gh pr create --assignee "${{ github.actor }}" --draft --base dev --head ${{ github.ref_name }} --title "${{ steps.branch_name.outputs.BRANCH_NAME }}" --body "Fixes #${{steps.issue_number.outputs.ISSUE_NUM}}"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

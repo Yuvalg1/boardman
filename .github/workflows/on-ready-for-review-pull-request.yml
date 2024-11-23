@@ -4,25 +4,36 @@ on:
 
 name: add code review label to issue
 
+env:
+  LABEL_TO_REMOVE: "in%20progress"
+  LABEL_TO_ADD: "waiting for CR"
+
 jobs:
-  add-code-review-label:
+  calculate_issue_number:
     runs-on: ubuntu-latest
+    outputs:
+      ISSUE_NUMBER: ${{ steps.set_issue_number.outputs.var_value }}
+    steps:
+      - name: calculate issue number
+        id: set_issue_number
+        run: |
+          pr_body=${{ github.event.pull_request.body }}
+          issue_number=$(echo "$pr_body" | grep -o '#[0-9]\+' | sed 's/#//')
+          echo "ISSUE_NUMBER=$issue_number" >> $GITHUB_ENV
+
+  ready-for-review-add-code-review-label:
+    runs-on: ubuntu-latest
+    needs: calculate_issue_number
     steps:
       - name: remove in progress label
         run: |
-          LABEL_TO_REMOVE="in%20progress"
-          ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1)
-
           curl -X DELETE \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels/$LABEL_TO_REMOVE"
+            "https://api.github.com/repos/${{ github.repository }}/issues/${{ needs.calculate_issue-number.outputs.ISSUE_NUMBER }}/labels/$LABEL_TO_REMOVE"
 
       - name: add code review Label
         run: |
-          ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1)
-          if [ ! -z "$ISSUE_NUMBER" ]; then
-            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -d '{"labels":["waiting for CR"]}' \
-            "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels"
-          fi
+          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -d '{"labels":[ $LABEL_TO_ADD ]}' \
+          "https://api.github.com/repos/${{ github.repository }}/issues/${{ needs.calculate_issue-number.outputs.ISSUE_NUMBER }}/labels"
