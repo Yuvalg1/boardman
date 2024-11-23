@@ -6,6 +6,7 @@ name: remove code review label from issue
 
 env:
   ISSUE_NUMBER: $(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1 | grep -o '[0-9]*')
+  LABEL_TO_REMOVE: "waiting%20for%20CR"
 
 jobs:
   remove-code-review-label:
@@ -13,8 +14,6 @@ jobs:
     steps:
       - name: remove code review label
         run: |
-          LABEL_TO_REMOVE="waiting%20for%20CR"
-
           curl -g -X DELETE \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \

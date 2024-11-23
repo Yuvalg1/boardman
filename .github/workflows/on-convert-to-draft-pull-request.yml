@@ -6,6 +6,8 @@ name: add in progress label to issue
 
 env:
   ISSUE_NUMBER: $(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1 | grep -o '[0-9]*')
+  LABEL_TO_REMOVE: "waiting%20for%20CR"
+  LABEL_TO_ADD: "in progress"
 
 jobs:
   add-in-progress-label:
@@ -13,7 +15,6 @@ jobs:
     steps:
       - name: remove code review label
         run: |
-          LABEL_TO_REMOVE="waiting%20for%20CR"
           echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
           curl -g -X DELETE \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
@@ -24,6 +25,6 @@ jobs:
         run: |
           if [ ! -z "$ISSUE_NUMBER" ]; then
             curl -g -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -d '{"labels":["in progress"]}' \
+            -d '{"labels":[ $LABEL_TO_ADD ]}' \
             "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels"
           fi
