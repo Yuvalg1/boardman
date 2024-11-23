@@ -13,7 +13,8 @@ jobs:
     steps:
       - name: calculate issue number
         run: |
-          ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | grep -oP '\[#\K\d+(?=\])')
+          PR_BODY="${{ github.event.pull_request.body }}"
+          ISSUE_NUMBER=$(echo "$PR_BODY" | grep -oP '\[#\K\d+(?=\])')
           echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
 
       - name: remove code review label

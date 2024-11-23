@@ -13,12 +13,12 @@ jobs:
     steps:
       - name: calculate issue number
         run: |
-          ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | grep -oP '\[#\K\d+(?=\])')
+          PR_BODY="${{ github.event.pull_request.body }}"
+          ISSUE_NUMBER=$(echo "$PR_BODY" | grep -oP '\[#\K\d+(?=\])')
           echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
 
       - name: add in progress label
         run: |
-          ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1)
           if [ ! -z "$ISSUE_NUMBER" ]; then
             curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -d '{"labels":[ $LABEL_TO_ADD ]}' \
