@@ -4,13 +4,15 @@ on:
 
 name: add in progress label to issue
 
+env:
+  ISSUE_NUMBER: $(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1 | grep -o '[0-9]*')
+
 jobs:
   add-in-progress-label:
     runs-on: ubuntu-latest
     steps:
       - name: add in progress label
         run: |
-          ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1)
           if [ ! -z "$ISSUE_NUMBER" ]; then
             curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -d '{"labels":["in progress"]}' \
