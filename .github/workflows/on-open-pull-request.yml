@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: calculate issue number
         run: |
-          ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | cut -d# -f2 | cut -d ' ' -f1 | grep -o '[0-9]*')
+          ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | grep -oP '\[#\K\d+(?=\])')
           echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
 
       - name: add in progress label
