@@ -11,6 +11,8 @@ const initialState: Player = {
 }
 
 const playerActions = (set: SetActions<PlayerStore>, get: () => PlayerStore) => ({
+  setPlayer: (player: Player) => set(player),
+
   setName: (name: string) => set({ name }),
 
   addCards: (cards: Card | Card[]) => set({ cards: get().cards.concat(cards) }),
