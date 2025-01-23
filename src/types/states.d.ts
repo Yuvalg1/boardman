@@ -1,3 +1,5 @@
+import { BoardStore } from "../board";
+
 export interface Card {
   effect: Function;
   id: string;
@@ -22,4 +24,10 @@ export interface Deck {
 export interface Board {
   players: Player[];
   decks?: Deck[];
+  currentPlayerIndex: number;
+  isGameOver: (board: BoardStore) => boolean;
+  winCondition: (player: Player) => boolean;
+  beforeTurn?: () => void;
+  afterTurn?: () => void;
+  counterClockwise?: true;
 }
